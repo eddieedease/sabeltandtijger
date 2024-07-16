@@ -1,11 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as cors from 'cors';
+import { join } from 'path';
+import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // Enable CORS for all origins
-  app.use(cors());
+  // Serve static files from the Angular app
+  app.use(express.static(join(__dirname, '..', 'public')));
+  // API routes
+  app.setGlobalPrefix('api');
+  // CORS configuration (if needed)
+  app.enableCors();
+
   await app.listen(3000);
 }
 bootstrap();
