@@ -3,16 +3,25 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd frontend && ng serve",
     "start:backend": "cd backend && npm run start:dev",
-    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+    "build": "npm run clean && npm run build:frontend && npm run build:backend && npm run copy:dist && npm run modify:package",
+    "build:frontend": "cd frontend && ng build --configuration production",
+    "build:backend": "cd backend && npm run build",
+    "clean": "if exist dist rmdir /s /q dist",
+    "copy:dist": "xcopy /E /I frontend\\dist\\frontend dist && xcopy /E /I backend\\dist dist\\server && npm run copy:package",
+    "copy:package": "copy backend\\package.json dist\\server && copy backend\\package-lock.json dist\\server",
+    "modify:package": "node scripts\\modify-package.js",
+    "postbuild": "cd dist\\server && npm install --only=production"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^6.0.1"
   }
 }
