@@ -1,6 +1,26 @@
 
-      <h1 class="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-
-      <router-outlet></router-outlet>
+      <div class="min-h-screen bg-purple-100 flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+          <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+              <img src="path-to-your-logo.svg" alt="Loom" class="h-8">
+              <nav class="hidden md:flex space-x-4">
+                <a href="#" class="text-gray-600 hover:text-gray-900">Use Cases</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900">For Business</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900">Resources</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900">Company</a>
+                <a [routerLink]="['/admin']" class="text-gray-600 hover:text-gray-900">Admin</a>
+              </nav>
+            </div>
+            <div class="flex items-center space-x-4">
+              <a href="#" class="text-gray-600 hover:text-gray-900">Sign In</a>
+              <a href="#" class="bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700">Get Loom For Free</a>
+            </div>
+          </div>
+        </header>
+      
+        <!-- Main Content -->
+        <router-outlet></router-outlet>
+        
+      </div>
