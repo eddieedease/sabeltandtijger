@@ -1,26 +1,62 @@
+<!-- app.component.html -->
+<div class="min-h-screen bg-purple-100 flex flex-col">
+  <!-- Header -->
+<!-- Header -->
+<header class="bg-white shadow-sm relative z-50">
+  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center">
+      <img src="assets/your-logo.svg" alt="Your Logo" class="h-8 mr-4">
+    </div>
+    
+    <!-- Mobile menu button -->
+    <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-gray-900">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+    
+    <!-- Desktop navigation menu -->
+    <nav class="hidden md:flex space-x-4">
+      <a routerLink="/landing" class="text-gray-600 hover:text-gray-900">Landing</a>
+      <a routerLink="/admin" class="text-gray-600 hover:text-gray-900">Admin</a>
+    </nav>
+    
+    <!-- Desktop CTA buttons -->
+    <div class="hidden md:flex items-center space-x-4">
+      <a href="#" class="text-gray-600 hover:text-gray-900">Sign In</a>
+      <a href="#" class="bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700">Get Started</a>
+    </div>
+  </div>
+</header>
 
-      <div class="min-h-screen bg-purple-100 flex flex-col">
-        <!-- Header -->
-        <header class="bg-white shadow-sm">
-          <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-              <img src="path-to-your-logo.svg" alt="Loom" class="h-8">
-              <nav class="hidden md:flex space-x-4">
-                <a href="#" class="text-gray-600 hover:text-gray-900">Use Cases</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">For Business</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">Resources</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">Company</a>
-                <a [routerLink]="['/admin']" class="text-gray-600 hover:text-gray-900">Admin</a>
-              </nav>
-            </div>
-            <div class="flex items-center space-x-4">
-              <a href="#" class="text-gray-600 hover:text-gray-900">Sign In</a>
-              <a href="#" class="bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700">Get Loom For Free</a>
-            </div>
-          </div>
-        </header>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="hidden fixed inset-0 bg-white z-50 overflow-y-auto">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex justify-between items-center mb-6">
+      <img src="assets/your-logo.svg" alt="Your Logo" class="h-8">
+      <button id="close-menu-button" class="text-gray-600 hover:text-gray-900">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <nav class="flex flex-col space-y-4">
+      <a routerLink="/landing" class="text-gray-800 hover:text-gray-900 py-3 border-b border-gray-200">Landing</a>
+      <a routerLink="/admin" class="text-gray-800 hover:text-gray-900 py-3 border-b border-gray-200">Admin</a>
       
-        <!-- Main Content -->
-        <router-outlet></router-outlet>
-        
-      </div>
+    </nav>
+  </div>
+</div>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto px-4 text-center">
+      © 2024 Your Company Name. All rights reserved.
+    </div>
+  </footer>
+</div>
