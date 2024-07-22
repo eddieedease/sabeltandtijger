@@ -11,6 +11,8 @@ import { StoreService } from '../store.service';
   styles: []
 })
 
+
+
 export class LandingComponent implements OnInit {
   users: any[] = [];
 
