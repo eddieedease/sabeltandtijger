@@ -21,7 +21,7 @@ export class LandingComponent implements OnInit {
   }
 
   loadUsers() {
-    this.dataService.getSomeData().subscribe({
+    this.dataService.getUsers().subscribe({
       next: (data) => {
         this.users = data;
         console.log('Users:', this.users);

@@ -4,6 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import { config } from './config';
 import { Observable } from 'rxjs';
 
+interface User {
+  username: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  age?: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +20,23 @@ export class StoreService {
 
   constructor(private http: HttpClient) {}
 
-  getSomeData(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/users`);
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/users`);
+  }
+
+  getUser(id: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/users/${id}`);
+  }
+
+  createUser(user: User): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/users`, user);
+  }
+
+  updateUser(id: string, user: Partial<User>): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/users/${id}`, user);
+  }
+
+  deleteUser(id: string): Observable<User> {
+    return this.http.delete<User>(`${this.apiUrl}/users/${id}`);
   }
 }

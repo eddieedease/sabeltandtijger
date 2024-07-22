@@ -1,0 +1,93 @@
+[
+    {
+      "username": "john_doe",
+      "email": "john.doe@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "age": 30,
+      "isActive": true,
+      "registrationDate": {"$date": "2023-01-15T08:00:00Z"},
+      "lastLogin": {"$date": "2024-07-22T14:30:00Z"},
+      "address": {
+        "street": "123 Main St",
+        "city": "Anytown",
+        "state": "CA",
+        "zipCode": "12345",
+        "country": "USA"
+      },
+      "phoneNumbers": [
+        {
+          "type": "home",
+          "number": "555-1234"
+        },
+        {
+          "type": "mobile",
+          "number": "555-5678"
+        }
+      ],
+      "interests": ["reading", "hiking", "photography"],
+      "subscription": {
+        "plan": "premium",
+        "startDate": {"$date": "2023-06-01T00:00:00Z"},
+        "renewalDate": {"$date": "2024-06-01T00:00:00Z"}
+      }
+    },
+    {
+      "username": "jane_smith",
+      "email": "jane.smith@example.com",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "age": 28,
+      "isActive": true,
+      "registrationDate": {"$date": "2023-03-20T10:15:00Z"},
+      "lastLogin": {"$date": "2024-07-21T09:45:00Z"},
+      "address": {
+        "street": "456 Elm St",
+        "city": "Other City",
+        "state": "NY",
+        "zipCode": "67890",
+        "country": "USA"
+      },
+      "phoneNumbers": [
+        {
+          "type": "mobile",
+          "number": "555-9876"
+        }
+      ],
+      "interests": ["cooking", "travel", "yoga"],
+      "subscription": {
+        "plan": "basic",
+        "startDate": {"$date": "2023-09-15T00:00:00Z"},
+        "renewalDate": {"$date": "2024-09-15T00:00:00Z"}
+      }
+    },
+    {
+      "username": "bob_johnson",
+      "email": "bob.johnson@example.com",
+      "firstName": "Bob",
+      "lastName": "Johnson",
+      "age": 45,
+      "isActive": false,
+      "registrationDate": {"$date": "2022-11-05T14:20:00Z"},
+      "lastLogin": {"$date": "2023-12-31T23:59:59Z"},
+      "address": {
+        "street": "789 Oak Rd",
+        "city": "Another Place",
+        "state": "TX",
+        "zipCode": "54321",
+        "country": "USA"
+      },
+      "phoneNumbers": [
+        {
+          "type": "work",
+          "number": "555-4321"
+        },
+        {
+          "type": "mobile",
+          "number": "555-8765"
+        }
+      ],
+      "interests": ["gardening", "chess", "woodworking"],
+      "subscription": null
+    }
+  ]
