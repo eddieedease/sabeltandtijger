@@ -1,12 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
+
 
 @Component({
   selector: 'app-admin',
-  standalone: true,
-  imports: [],
   templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css'
+  styleUrls: ['./admin.component.css']
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
+  isMenuOpen = true;
+  private mobileBreakpoint = 1024; // Adjust this value as needed (1024px for lg breakpoint)
 
+  ngOnInit() {
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    this.isMenuOpen = window.innerWidth > this.mobileBreakpoint;
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 }
