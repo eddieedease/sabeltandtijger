@@ -1,1 +1,68 @@
-<p>admin works!</p>
+<div class="flex h-[calc(100vh-64px)] bg-gray-100 overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="fixed md:static top-16 md:top-0 left-0 z-40 h-[calc(100vh-64px)] transition-all duration-300 ease-in-out overflow-hidden"
+           [ngClass]="{'w-64': isMenuOpen, 'w-0': !isMenuOpen}">
+      <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 w-64">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-xl font-semibold">Admin Dashboard</h2>
+          <button (click)="toggleMenu()" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <ul class="space-y-2 font-medium">
+          <li>
+            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" (click)="closeMenuOnMobile()">
+              <span class="ml-3">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" (click)="closeMenuOnMobile()">
+              <span class="ml-3">Users</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700" (click)="closeMenuOnMobile()">
+              <span class="ml-3">Products</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col transition-all duration-300 ease-in-out">
+      <!-- Top navbar (admin-specific) -->
+      <header class="bg-white shadow-md p-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <button (click)="toggleMenu()" class="text-gray-500 hover:text-gray-700 mr-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          <h1 class="text-2xl font-semibold">Welcome, Admin</h1>
+        </div>
+        <button class="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-lg shadow-sm hover:bg-blue-600">Logout</button>
+      </header>
+  
+      <!-- Page content -->
+      <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+        <h2 class="text-2xl font-semibold mb-4">Dashboard Overview</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-2">Total Users</h3>
+            <p class="text-3xl font-bold">1,234</p>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-2">Revenue</h3>
+            <p class="text-3xl font-bold">$45,678</p>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-2">Active Products</h3>
+            <p class="text-3xl font-bold">89</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>

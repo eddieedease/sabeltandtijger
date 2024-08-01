@@ -1,23 +1,31 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import { AdminComponent } from './admin.component';
+@Component({
+  selector: 'app-admin',
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.css'],
+  standalone: true,
+  imports: [CommonModule]
+})
+export class AdminComponent implements OnInit {
+  isMenuOpen = true;
+  private mobileBreakpoint = 1024; // Adjust this value as needed (1024px for lg breakpoint)
 
-describe('AdminComponent', () => {
-  let component: AdminComponent;
-  let fixture: ComponentFixture<AdminComponent>;
+  ngOnInit() {
+    this.checkScreenSize();
+  }
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AdminComponent]
-    })
-    .compileComponents();
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
 
-    fixture = TestBed.createComponent(AdminComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  private checkScreenSize() {
+    this.isMenuOpen = window.innerWidth > this.mobileBreakpoint;
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+}
