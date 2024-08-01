@@ -1,6 +1,7 @@
-<div class="flex h-screen">
+<div class="flex flex-col min-h-screen">
+  <main class="flex-grow flex overflow-hidden">
     <!-- Left column: Tree view -->
-    <div class="w-1/4 bg-gray-100 p-4">
+    <div class="w-1/4 bg-gray-100 p-4 overflow-y-auto">
       <ul cdkDropList (cdkDropListDropped)="drop($event)">
         <li *ngFor="let node of treeData" cdkDrag class="mb-2 p-2 bg-white rounded shadow">
           {{ node.name }}
@@ -14,14 +15,16 @@
     </div>
 
     <!-- Middle column: Markdown editor -->
-    <div class="w-1/2 bg-white p-4">
+    <div class="w-1/2 bg-white p-4 flex flex-col overflow-hidden">
       <textarea [(ngModel)]="markdownContent" (ngModelChange)="onContentChange()" 
-                class="w-full h-1/2 p-2 border rounded"></textarea>
-      <markdown [data]="markdownContent" class="mt-4 p-2 border rounded"></markdown>
+                class="w-full h-1/2 p-2 border rounded mb-4 overflow-y-auto"></textarea>
+      <div class="flex-grow overflow-y-auto markdown-body prose">
+        <markdown [data]="markdownContent" class="p-2 border rounded"></markdown>
+      </div>
     </div>
 
     <!-- Right column: Information and settings -->
-    <div class="w-1/4 bg-gray-200 p-4">
+    <div class="w-1/4 bg-gray-200 p-4 overflow-y-auto">
       <h2 class="text-lg font-bold mb-2">Settings</h2>
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700">Title</label>
@@ -32,4 +35,4 @@
         <textarea [(ngModel)]="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
       </div>
     </div>
-  </div>
+  </main>
