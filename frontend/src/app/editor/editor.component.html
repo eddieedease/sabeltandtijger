@@ -1,0 +1,35 @@
+<div class="flex h-screen">
+    <!-- Left column: Tree view -->
+    <div class="w-1/4 bg-gray-100 p-4">
+      <ul cdkDropList (cdkDropListDropped)="drop($event)">
+        <li *ngFor="let node of treeData" cdkDrag class="mb-2 p-2 bg-white rounded shadow">
+          {{ node.name }}
+          <ul *ngIf="node.children">
+            <li *ngFor="let child of node.children" class="ml-4 mt-1">
+              {{ child.name }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Middle column: Markdown editor -->
+    <div class="w-1/2 bg-white p-4">
+      <textarea [(ngModel)]="markdownContent" (ngModelChange)="onContentChange()" 
+                class="w-full h-1/2 p-2 border rounded"></textarea>
+      <markdown [data]="markdownContent" class="mt-4 p-2 border rounded"></markdown>
+    </div>
+
+    <!-- Right column: Information and settings -->
+    <div class="w-1/4 bg-gray-200 p-4">
+      <h2 class="text-lg font-bold mb-2">Settings</h2>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Title</label>
+        <input type="text" [(ngModel)]="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea [(ngModel)]="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+      </div>
+    </div>
+  </div>

@@ -2,11 +2,13 @@ import { Component, OnInit  } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StoreService } from '../store.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faUser, faHome } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, FontAwesomeModule],
   templateUrl: './landing.component.html',
   styles: []
 })
@@ -14,6 +16,12 @@ import { StoreService } from '../store.service';
 
 
 export class LandingComponent implements OnInit {
+
+  // font awesome icons
+  faUser = faUser;
+  faHome = faHome;
+
+
   users: any[] = [];
 
   constructor(private dataService: StoreService) { }
