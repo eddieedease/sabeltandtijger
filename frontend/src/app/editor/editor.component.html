@@ -2,12 +2,21 @@
   <main class="flex-grow flex overflow-hidden">
     <!-- Left column: Tree view -->
     <div class="w-1/4 bg-gray-100 p-4 overflow-y-auto">
-      <ul cdkDropList (cdkDropListDropped)="drop($event)">
-        <li *ngFor="let node of treeData" cdkDrag class="mb-2 p-2 bg-white rounded shadow">
-          {{ node.name }}
-          <ul *ngIf="node.children">
-            <li *ngFor="let child of node.children" class="ml-4 mt-1">
-              {{ child.name }}
+      <ul cdkDropList (cdkDropListDropped)="dropChapter($event)" [cdkDropListData]="treeData">
+        <li *ngFor="let node of treeData; let i = index" cdkDrag class="mb-2">
+          <div class="p-2 bg-white rounded shadow">
+            {{ node.name }}
+          </div>
+          <ul cdkDropList
+              [cdkDropListData]="node.children"
+              (cdkDropListDropped)="dropSection($event, i)"
+              [cdkDropListConnectedTo]="getSectionLists()"
+              [id]="'list-' + i"
+              class="min-h-[30px] p-1 bg-gray-50 rounded mt-1">
+            <li *ngFor="let child of node.children" cdkDrag class="ml-4 mt-1">
+              <div class="p-2 bg-white rounded shadow">
+                {{ child.name }}
+              </div>
             </li>
           </ul>
         </li>
