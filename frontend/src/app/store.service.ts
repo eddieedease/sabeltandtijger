@@ -4,12 +4,24 @@ import { HttpClient } from '@angular/common/http';
 import { config } from './config';
 import { Observable } from 'rxjs';
 
+// uster interface
 interface User {
   username: string;
   email: string;
   firstName?: string;
   lastName?: string;
   age?: number;
+}
+
+// Treenode interface
+interface TreeNode {
+  id: string;
+  type: 'chapter' | 'section' | 'subsection' | 'content';
+  title: string;
+  content?: string;
+  children?: TreeNode[];
+  expanded?: boolean;
+  parentId?: string;
 }
 
 @Injectable({
@@ -20,6 +32,7 @@ export class StoreService {
 
   constructor(private http: HttpClient) {}
 
+  // users API CALLS
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/users`);
   }
@@ -39,4 +52,41 @@ export class StoreService {
   deleteUser(id: string): Observable<User> {
     return this.http.delete<User>(`${this.apiUrl}/users/${id}`);
   }
+
+  // TreeNodes
+   // TreeNodes
+    // TreeNodes
+     // TreeNodes
+  createTreeNode(treeNode: Partial<TreeNode>): Observable<TreeNode> {
+    return this.http.post<TreeNode>(this.apiUrl, treeNode);
+  }
+
+  getTreeNodes(): Observable<TreeNode[]> {
+    return this.http.get<TreeNode[]>(this.apiUrl);
+  }
+
+  getTree(): Observable<TreeNode[]> {
+    return this.http.get<TreeNode[]>(`${this.apiUrl}/treenode/tree`);
+  }
+
+  getTreeNode(id: string): Observable<TreeNode> {
+    return this.http.get<TreeNode>(`${this.apiUrl}/treenode/${id}`);
+  }
+
+  updateTreeNode(id: string, treeNode: Partial<TreeNode>): Observable<TreeNode> {
+    return this.http.put<TreeNode>(`${this.apiUrl}/treenode/${id}`, treeNode);
+  }
+
+  deleteTreeNode(id: string): Observable<TreeNode> {
+    return this.http.delete<TreeNode>(`${this.apiUrl}/treenode/${id}`);
+  }
+
+  addChild(parentId: string, childId: string): Observable<TreeNode> {
+    return this.http.put<TreeNode>(`${this.apiUrl}/treenode/${parentId}/add-child/${childId}`, {});
+  }
+
+  removeChild(parentId: string, childId: string): Observable<TreeNode> {
+    return this.http.put<TreeNode>(`${this.apiUrl}/treenode/${parentId}/remove-child/${childId}`, {});
+  }
+
 }
