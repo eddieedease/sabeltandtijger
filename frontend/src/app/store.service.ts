@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { config } from './config';
-import { Observable } from 'rxjs';
+import { Observable, lastValueFrom  } from 'rxjs';
 
 interface User {
   username: string;
@@ -59,16 +59,16 @@ export class StoreService {
     return this.http.get<TreeNode[]>(`${this.apiUrl}/tree-nodes`);
   }
 
-  getTree(): Observable<TreeNode[]> {
-    return this.http.get<TreeNode[]>(`${this.apiUrl}/tree-nodes/tree`);
+  async getTree(): Promise<TreeNode[]> {
+    return lastValueFrom(this.http.get<TreeNode[]>(`${this.apiUrl}/tree-nodes/tree`));
   }
 
   getTreeNode(id: string): Observable<TreeNode> {
     return this.http.get<TreeNode>(`${this.apiUrl}/tree-nodes/${id}`);
   }
 
-  updateTreeNode(id: string, treeNode: Partial<TreeNode>): Observable<TreeNode> {
-    return this.http.put<TreeNode>(`${this.apiUrl}/tree-nodes/${id}`, treeNode);
+  async updateTreeNode(id: string, updateData: Partial<TreeNode>): Promise<TreeNode> {
+    return lastValueFrom(this.http.put<TreeNode>(`${this.apiUrl}/tree-nodes/${id}`, updateData));
   }
 
   deleteTreeNode(id: string): Observable<TreeNode> {

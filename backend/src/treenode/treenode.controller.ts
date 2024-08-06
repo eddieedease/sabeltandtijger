@@ -17,9 +17,9 @@ export class TreeNodeController {
   }
 
   @Get('tree')
-  getTree(): Promise<TreeNode[]> {
-    return this.treeNodeService.getTree();
-  }
+async getTree(): Promise<TreeNode[]> {
+  return this.treeNodeService.getTree();
+}
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<TreeNode> {

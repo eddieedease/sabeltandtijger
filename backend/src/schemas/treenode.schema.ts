@@ -15,14 +15,14 @@ export class TreeNode extends Document {
   @Prop()
   content?: string;
 
-  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'TreeNode' }] })
-  children?: TreeNode[];
+  @Prop({ type: [{ type: Object }] })
+  children: TreeNode[];
 
   @Prop({ default: false })
   expanded?: boolean;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'TreeNode' })
-  parentId?: TreeNode;
+  @Prop({ type: String, default: null })
+  parentId: string | null;
 }
 
 export const TreeNodeSchema = SchemaFactory.createForClass(TreeNode);

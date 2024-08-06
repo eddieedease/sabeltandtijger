@@ -12,7 +12,7 @@ interface TreeNode {
   content?: string;
   children?: TreeNode[];
   expanded?: boolean;
-  parentId?: string;
+  parentId?: string | undefined;  // Explicitly allow undefined
 }
 
 @Component({
@@ -35,25 +35,22 @@ export class EditorComponent implements OnInit {
     this.loadTree();
   }
 
-  loadTree() {
+  async loadTree() {
     console.log('Loading tree...');
-    this.storeService.getTree().subscribe(
-      tree => {
-        this.treeData = tree;
-        console.log('Tree loaded:', tree);
-        if (tree.length === 0) {
-          console.log('Tree is empty. You may need to add some initial data.');
-        }
-      },
-      error => {
-        console.error('Error loading tree:', error);
-        // Optionally, set some default data for testing
-        this.treeData = [
-          { id: '1', title: 'Chapter 1', type: 'chapter' },
-          { id: '2', title: 'Chapter 2', type: 'chapter' }
-        ];
+    try {
+      this.treeData = await this.storeService.getTree();
+      console.log('Tree loaded:', this.treeData);
+      if (this.treeData.length === 0) {
+        console.log('Tree is empty. You may need to add some initial data.');
       }
-    );
+    } catch (error) {
+      console.error('Error loading tree:', error);
+      // Optionally, set some default data for testing
+      this.treeData = [
+        { id: '1', title: 'Chapter 1', type: 'chapter' },
+        { id: '2', title: 'Chapter 2', type: 'chapter' }
+      ];
+    }
   }
 
   getSectionLists(): string[] {
@@ -69,59 +66,66 @@ export class EditorComponent implements OnInit {
     const chapter = this.treeData[chapterIndex];
     if (!chapter) return;
 
-    const sourceData = event.previousContainer.data || [];
-    const targetData = event.container.data || [];
-
-    if (event.previousContainer === event.container) {
-      moveItemInArray(targetData, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        sourceData,
-        targetData,
-        event.previousIndex,
-        event.currentIndex,
-      );
+    if (!chapter.children) {
+      chapter.children = [];
     }
 
-    chapter.children = targetData;
-
     if (event.previousContainer !== event.container) {
-      const sourceChapterIndex = this.treeData.findIndex(c => c.children === sourceData);
-      if (sourceChapterIndex !== -1) {
-        this.treeData[sourceChapterIndex].children = sourceData;
+      const sourceChapter = this.treeData.find(c => c.children === event.previousContainer.data);
+      if (sourceChapter && sourceChapter.children) {
+        transferArrayItem(
+          sourceChapter.children,
+          chapter.children,
+          event.previousIndex,
+          event.currentIndex
+        );
+        // Update parentId for the moved item
+        const movedItem = chapter.children[event.currentIndex];
+        if (movedItem) {
+          movedItem.parentId = chapter.id;  // This is fine as chapter.id is a string
+        }
       }
     }
 
     this.updateTreeStructure();
   }
 
-  updateTreeStructure() {
-    this.treeData.forEach((node, index) => {
-      const updateData: Partial<TreeNode> = {
-        title: node.title,
-        type: node.type,
-        content: node.content
-      };
-      // For top-level nodes, we don't send parentId at all
-      this.storeService.updateTreeNode(node.id, updateData).subscribe(
-        updatedNode => console.log('Node updated:', updatedNode),
-        error => console.error('Error updating node:', error)
-      );
-      
+  async updateTreeStructure() {
+    for (const node of this.treeData) {
+      await this.updateNode(node, undefined);  // Pass undefined for top-level nodes
       if (node.children) {
-        node.children.forEach(child => {
-          this.storeService.updateTreeNode(child.id, { 
-            parentId: node.id,
-            title: child.title,
-            type: child.type,
-            content: child.content
-          }).subscribe(
-            updatedChild => console.log('Child node updated:', updatedChild),
-            error => console.error('Error updating child node:', error)
-          );
-        });
+        for (const child of node.children) {
+          await this.updateNode(child, node.id);
+        }
       }
-    });
+    }
+  }
+
+  private async updateNode(node: TreeNode, parentId?: string) {
+    const updateData: Partial<TreeNode> = {
+      title: node.title,
+      type: node.type,
+      content: node.content,
+      parentId: parentId  // This will be undefined for top-level nodes
+    };
+    
+  
+    try {
+      if (!node.id || node.id.includes('.')) {
+        // Generate a new ID if it's invalid
+        node.id = this.generateUniqueId();
+      }
+      const updatedNode = await this.storeService.updateTreeNode(node.id, updateData);
+      console.log('Node updated:', updatedNode);
+      // Update the node in the tree with the response from the server
+      Object.assign(node, updatedNode);
+    } catch (error) {
+      console.error('Error updating node:', error);
+    }
+  }
+
+  private generateUniqueId(): string {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
   }
 
   selectNode(node: TreeNode) {
@@ -130,26 +134,30 @@ export class EditorComponent implements OnInit {
     this.title = node.title;
   }
 
-  onContentChange() {
+  async onContentChange() {
     if (this.selectedNode) {
       this.selectedNode.content = this.markdownContent;
-      this.storeService.updateTreeNode(this.selectedNode.id, { 
-        content: this.markdownContent,
-        title: this.title
-      }).subscribe(
-        updatedNode => console.log('Content updated:', updatedNode),
-        error => console.error('Error updating content:', error)
-      );
+      try {
+        const updatedNode = await this.storeService.updateTreeNode(this.selectedNode.id, { 
+          content: this.markdownContent,
+          title: this.title
+        });
+        console.log('Content updated:', updatedNode);
+      } catch (error) {
+        console.error('Error updating content:', error);
+      }
     }
   }
 
-  onTitleChange() {
+  async onTitleChange() {
     if (this.selectedNode) {
       this.selectedNode.title = this.title;
-      this.storeService.updateTreeNode(this.selectedNode.id, { title: this.title }).subscribe(
-        updatedNode => console.log('Title updated:', updatedNode),
-        error => console.error('Error updating title:', error)
-      );
+      try {
+        const updatedNode = await this.storeService.updateTreeNode(this.selectedNode.id, { title: this.title });
+        console.log('Title updated:', updatedNode);
+      } catch (error) {
+        console.error('Error updating title:', error);
+      }
     }
   }
 }
